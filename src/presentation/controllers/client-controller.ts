@@ -8,6 +8,7 @@ import {
   HttpCode,
   Put,
 } from '@nestjs/common';
+import { Customer } from 'src/domain/customer';
 import { RedisCustomerRepository } from 'src/infra/redis';
 import { CustomerUC } from 'src/use-cases/customer/customer-uc';
 
@@ -33,11 +34,22 @@ export class CustomerController {
   }
 
   @Put('customers/:id')
-  async updateCustomer(@Res() response, @Param('id') id: string): Promise<any> {
+  async updateCustomer(@Res() response, @Body() body): Promise<any> {
     const customerRepository = new RedisCustomerRepository();
     const customerUc = new CustomerUC(customerRepository);
-    const customer = await customerUc.getCustomer(id);
+    const customer = await customerUc.getCustomer(body.id);
 
-    return response.status(200).send(customer.name);
+    if (customer) {
+      const customerToUpdate = new Customer(
+        customer.id,
+        body.document,
+        body.name,
+      );
+      const updatedCustomer = await customerUc.updateCustomer(customerToUpdate);
+
+      return response.status(200).send(updatedCustomer.name);
+    } else {
+      console.log('erro');
+    }
   }
 }

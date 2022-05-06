@@ -17,4 +17,9 @@ export class CustomerUC implements ICustomer {
     const customer = await this.customerRepository.getCustomer(id);
     return customer;
   }
+
+  async updateCustomer(customer: Customer): Promise<Customer> {
+    const updatedCustomer = await this.customerRepository.addCustomer(customer);
+    return updatedCustomer;
+  }
 }
