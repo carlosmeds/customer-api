@@ -12,4 +12,9 @@ export class CustomerUC implements ICustomer {
     const addedCustomer = await this.customerRepository.addCustomer(customer);
     return addedCustomer;
   }
+
+  async getCustomer(id: string): Promise<Customer> {
+    const customer = await this.customerRepository.getCustomer(id);
+    return customer;
+  }
 }

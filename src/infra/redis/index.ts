@@ -8,4 +8,11 @@ export class RedisCustomerRepository {
 
     return customer;
   }
+
+  async getCustomer(id: string): Promise<Customer> {
+    const cache = new Cache();
+    const customer = await cache.get(id);
+
+    return customer;
+  }
 }
