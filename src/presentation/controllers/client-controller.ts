@@ -6,7 +6,6 @@ import { CustomerUC } from 'src/use-cases/customer/customer-uc';
 export class CustomerController {
   @Post('customers')
   async addCustomer(@Res() response, @Body() body): Promise<any> {
-    console.log(body);
     const customerRepository = new RedisCustomerRepository();
     const customerUc = new CustomerUC(customerRepository);
     const customer = await customerUc.addCustomer(body?.document, body?.name);
