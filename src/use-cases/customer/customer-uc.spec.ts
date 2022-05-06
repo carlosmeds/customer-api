@@ -1,9 +1,8 @@
 import { Customer } from '../../domain/customer';
 import { CustomerUC } from './customer-uc';
-import { ICustomer } from './protocols';
 import { v4 as uuidv4 } from 'uuid';
 
-class inMemoryCustomerRepository implements ICustomer {
+class inMemoryCustomerRepository {
   async addCustomer(document: number, name: string): Promise<Customer> {
     const customer = new Customer(uuidv4(), document, name);
     return customer;
