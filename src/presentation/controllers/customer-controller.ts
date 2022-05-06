@@ -48,8 +48,6 @@ export class CustomerController {
       const updatedCustomer = await customerUc.updateCustomer(customerToUpdate);
 
       return response.status(200).send(updatedCustomer.name);
-    } else {
-      console.log('erro');
     }
   }
 }

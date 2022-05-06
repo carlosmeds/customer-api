@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Customer } from '../../domain/customer';
 import { ICustomer } from './protocols';
 import { v4 as uuidv4 } from 'uuid';
@@ -15,6 +15,9 @@ export class CustomerUC implements ICustomer {
 
   async getCustomer(id: string): Promise<Customer> {
     const customer = await this.customerRepository.getCustomer(id);
+    if (!customer) {
+      throw new NotFoundException('cliente inexistente');
+    }
     return customer;
   }
 
