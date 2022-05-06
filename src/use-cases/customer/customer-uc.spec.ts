@@ -1,10 +1,8 @@
 import { Customer } from '../../domain/customer';
 import { CustomerUC } from './customer-uc';
-import { v4 as uuidv4 } from 'uuid';
 
 class inMemoryCustomerRepository {
-  async addCustomer(document: number, name: string): Promise<Customer> {
-    const customer = new Customer(uuidv4(), document, name);
+  async addCustomer(customer: Customer): Promise<Customer> {
     return customer;
   }
 }
@@ -16,6 +14,7 @@ describe('Customer Use Case', () => {
     const customerTest = new Customer('uuid', 123456789, 'John Doe');
 
     const addedCustomer = await customerUC.addCustomer(123456789, 'John Doe');
+    console.log(addedCustomer);
 
     expect(addedCustomer.name).toBe(customerTest.name);
     expect(addedCustomer.document).toBe(customerTest.document);
