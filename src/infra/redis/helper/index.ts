@@ -1,11 +1,12 @@
 import Redis from 'ioredis';
+import env from '../../../main/env';
 
 export class Cache {
   redis: Redis;
   constructor() {
     this.redis = new Redis({
-      host: 'localhost',
-      port: 6380,
+      host: env.redisHost,
+      port: Number(env.redisPort),
       keyPrefix: 'customer:',
     });
   }
