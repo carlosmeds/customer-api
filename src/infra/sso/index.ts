@@ -21,8 +21,7 @@ export class AuthenticationRespository {
     };
 
     const result = await axios(options);
-    console.log('RESULTADO', result?.data);
 
-    return true;
+    return result?.data?.active;
   }
 }
