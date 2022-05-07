@@ -1,0 +1,27 @@
+version: '3'
+services:
+  redis-connection:
+    container_name: redis-connection
+    image: redis:7.0-alpine
+    restart: always
+    volumes: 
+      - redis-data:/data
+    ports:
+      - '6379:6379'
+  customer-api:
+    build: .
+    container_name: customer-api
+    restart: always
+    environment:
+      REDIS_HOST: redis-connection
+      REDIS_PORT: 6379
+    depends_on:
+      - redis-connection
+    volumes:
+      - ./src:/usr/src/src
+    ports:
+      - '3000:3000'
+    command: npm start
+volumes:
+  redis-data:
+    driver: local
