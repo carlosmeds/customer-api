@@ -21,7 +21,7 @@ export class CustomerController {
     const customerUc = new CustomerUC(customerRepository);
     const customer = await customerUc.addCustomer(body?.document, body?.name);
 
-    return response.send(customer.id);
+    return response.send(customer);
   }
 
   @Get('customers/:id')
@@ -30,14 +30,18 @@ export class CustomerController {
     const customerUc = new CustomerUC(customerRepository);
     const customer = await customerUc.getCustomer(id);
 
-    return response.status(200).send(customer.name);
+    return response.status(200).send(customer);
   }
 
   @Put('customers/:id')
-  async updateCustomer(@Res() response, @Body() body): Promise<any> {
+  async updateCustomer(
+    @Res() response,
+    @Param('id') id: string,
+    @Body() body,
+  ): Promise<any> {
     const customerRepository = new RedisCustomerRepository();
     const customerUc = new CustomerUC(customerRepository);
-    const customer = await customerUc.getCustomer(body.id);
+    const customer = await customerUc.getCustomer(id);
 
     if (customer) {
       const customerToUpdate = new Customer(
@@ -47,7 +51,7 @@ export class CustomerController {
       );
       const updatedCustomer = await customerUc.updateCustomer(customerToUpdate);
 
-      return response.status(200).send(updatedCustomer.name);
+      return response.status(200).send(updatedCustomer);
     }
   }
 }
