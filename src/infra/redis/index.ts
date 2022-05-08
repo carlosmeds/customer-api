@@ -4,7 +4,7 @@ import { Cache } from './helper';
 export class RedisCustomerRepository {
   async addCustomer(customer: Customer): Promise<Customer> {
     const cache = new Cache();
-    await cache.set(customer.id, customer, 60);
+    await cache.set(customer.id, customer, 3600);
 
     return customer;
   }
