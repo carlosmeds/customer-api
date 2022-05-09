@@ -24,6 +24,6 @@ describe('Authentication Use Case', () => {
     const authUc = new AuthenticationUC(authRepository);
 
     const isValid = authUc.checkAuth('invalid_token');
-    expect(isValid).rejects.toThrow('não autorizado');
+    expect(isValid).rejects.toThrow('sso indisponível');
   });
 });
