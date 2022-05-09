@@ -1,8 +1,10 @@
+import { BadGatewayException } from '@nestjs/common';
 import axios from 'axios';
 import env from '../../main/env';
 
 export class AuthenticationRespository {
   async checkAuth(token: string): Promise<boolean> {
+    let result;
     const params = {
       client_id: env.ssoClientId,
       client_secret: env.ssoClientSecret,
@@ -20,7 +22,11 @@ export class AuthenticationRespository {
       url: env.ssoUrl,
     };
 
-    const result = await axios(options);
+    try {
+      result = await axios(options);
+    } catch (err) {
+      throw new BadGatewayException('sso indisponível');
+    }
 
     return result?.data?.active;
   }
