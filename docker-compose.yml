@@ -7,7 +7,7 @@ services:
     volumes: 
       - redis-data:/data
     ports:
-      - '6380:6380'
+      - '6379:6379'
   customer-api:
     build: .
     container_name: customer-api
