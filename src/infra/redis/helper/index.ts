@@ -20,4 +20,8 @@ export class Cache {
   set(key, value, timeExp) {
     return this.redis.set(key, JSON.stringify(value), 'EX', timeExp);
   }
+
+  async disconnect() {
+    await this.redis.disconnect();
+  }
 }
