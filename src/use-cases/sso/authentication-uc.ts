@@ -6,7 +6,7 @@ export class AuthenticationUC implements IAuthentication {
   constructor(private readonly ssoRepository: any) {}
 
   async checkAuth(token: string): Promise<boolean | Error> {
-    const isValid = this.ssoRepository.checkAuth(token);
+    const isValid = await this.ssoRepository.checkAuth(token);
     if (!isValid) {
       throw new UnauthorizedException('não autorizado');
     }
