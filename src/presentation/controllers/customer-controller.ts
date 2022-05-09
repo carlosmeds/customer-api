@@ -10,6 +10,10 @@ import {
 } from '@nestjs/common';
 import { Customer } from 'src/domain/customer';
 import { RedisCustomerRepository } from 'src/infra/redis';
+import {
+  makeAddCustomerValidation,
+  makeUpdateCustomerValidation,
+} from 'src/main/factories';
 import { CustomerUC } from 'src/use-cases/customer/customer-uc';
 
 @Controller()
@@ -17,6 +21,9 @@ export class CustomerController {
   @Post('customers')
   @HttpCode(201)
   async addCustomer(@Res() response, @Body() body): Promise<any> {
+    const vd = makeAddCustomerValidation(body);
+    await vd.validate();
+
     const customerRepository = new RedisCustomerRepository();
     const customerUc = new CustomerUC(customerRepository);
     const customer = await customerUc.addCustomer(body?.document, body?.name);
@@ -39,6 +46,9 @@ export class CustomerController {
     @Param('id') id: string,
     @Body() body,
   ): Promise<any> {
+    const vd = makeUpdateCustomerValidation(body);
+    await vd.validate();
+
     const customerRepository = new RedisCustomerRepository();
     const customerUc = new CustomerUC(customerRepository);
     const customer = await customerUc.getCustomer(id);
