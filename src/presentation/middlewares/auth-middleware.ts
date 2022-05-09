@@ -1,4 +1,8 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
+import {
+  UnauthorizedException,
+  Injectable,
+  NestMiddleware,
+} from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 import { AuthenticationRespository } from '../../infra/sso';
 import { AuthenticationUC } from '../../use-cases/sso/authentication-uc';
@@ -11,6 +15,10 @@ export class AuthMiddleware implements NestMiddleware {
     const authUC = new AuthenticationUC(authRepository);
 
     const { authorization } = req.headers;
+    if (!authorization) {
+      throw new UnauthorizedException('não autorizado');
+    }
+
     const [, token] = authorization.split(' ');
 
     await authUC.checkAuth(token);

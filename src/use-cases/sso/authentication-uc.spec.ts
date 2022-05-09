@@ -1,4 +1,4 @@
-import { ForbiddenException } from '@nestjs/common';
+import { UnauthorizedException } from '@nestjs/common';
 import { AuthenticationUC } from './authentication-uc';
 
 class inMemoryAuthRepository {
@@ -6,7 +6,7 @@ class inMemoryAuthRepository {
     if (token === 'valid_token') {
       return true;
     }
-    throw new ForbiddenException('não autorizado');
+    throw new UnauthorizedException('não autorizado');
   }
 }
 
