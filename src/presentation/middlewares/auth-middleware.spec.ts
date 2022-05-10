@@ -2,7 +2,7 @@ import { AuthMiddleware } from './auth-middleware';
 import * as httpMocks from 'node-mocks-http';
 
 describe('Authentication Middleware', () => {
-  it('should return 401 if no token is passed', async () => {
+  it('should throws if no token is passed', async () => {
     const middleware = new AuthMiddleware();
     const req = httpMocks.createRequest();
 
