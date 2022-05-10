@@ -14,7 +14,9 @@ import {
   makeAddCustomerValidation,
   makeUpdateCustomerValidation,
 } from 'src/main/factories';
-import { CustomerUC } from 'src/use-cases/customer/customer-uc';
+import { AddCustomerUC } from 'src/use-cases/customer/add-customer-uc';
+import { GetCustomerUC } from 'src/use-cases/customer/get-customer-uc';
+import { UpdateCustomerUC } from 'src/use-cases/customer/update-customer-uc';
 
 @Controller()
 export class CustomerController {
@@ -25,8 +27,8 @@ export class CustomerController {
     await vd.validate();
 
     const customerRepository = new RedisCustomerRepository();
-    const customerUc = new CustomerUC(customerRepository);
-    const customer = await customerUc.addCustomer(body?.document, body?.name);
+    const addCustomerUc = new AddCustomerUC(customerRepository);
+    const customer = await addCustomerUc.handle(body?.document, body?.name);
 
     return response.send(customer);
   }
@@ -34,8 +36,8 @@ export class CustomerController {
   @Get('customers/:id')
   async getCustomer(@Res() response, @Param('id') id: string): Promise<any> {
     const customerRepository = new RedisCustomerRepository();
-    const customerUc = new CustomerUC(customerRepository);
-    const customer = await customerUc.getCustomer(id);
+    const getCustomerUc = new GetCustomerUC(customerRepository);
+    const customer = await getCustomerUc.handle(id);
 
     return response.status(200).send(customer);
   }
@@ -50,18 +52,10 @@ export class CustomerController {
     await vd.validate();
 
     const customerRepository = new RedisCustomerRepository();
-    const customerUc = new CustomerUC(customerRepository);
-    const customer = await customerUc.getCustomer(id);
+    const updateCustomerUc = new UpdateCustomerUC(customerRepository);
+    const customerToUpdate = new Customer(id, body.document, body.name);
+    const updatedCustomer = await updateCustomerUc.handle(customerToUpdate);
 
-    if (customer) {
-      const customerToUpdate = new Customer(
-        customer.id,
-        body.document,
-        body.name,
-      );
-      const updatedCustomer = await customerUc.updateCustomer(customerToUpdate);
-
-      return response.status(200).send(updatedCustomer);
-    }
+    return response.status(200).send(updatedCustomer);
   }
 }
