@@ -19,7 +19,7 @@ describe('Authentication Use Case', () => {
 
     expect(isValid).toBe(true);
   });
-  it('Should trhow when invalid token is passed', async () => {
+  it('Should throw when invalid token is passed', async () => {
     const authRepository = new inMemoryAuthRepository();
     const authUc = new AuthenticationUC(authRepository);
 
