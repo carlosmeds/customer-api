@@ -13,4 +13,13 @@ describe('Update Customer Use Case', () => {
     expect(addedCustomer.name).toBe(customerTest.name);
     expect(addedCustomer.document).toBe(customerTest.document);
   });
+  it('should throw if customer doesnt exists', async () => {
+    const customerRepository = new inMemoryCustomerRepository();
+    const customerUC = new UpdateCustomerUC(customerRepository);
+    const customerTest = new Customer('invalid_uuid', 123456789, 'John Doe');
+
+    const addedCustomer = customerUC.handle(customerTest);
+
+    expect(addedCustomer).rejects.toThrow('cliente inexistente');
+  });
 });
