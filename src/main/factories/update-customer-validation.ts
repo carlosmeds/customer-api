@@ -1,4 +1,4 @@
-import { RequiredFieldValidation } from 'src/presentation/validation/required-field-validation';
+import { RequiredFieldValidation } from '../../presentation/validation/required-field-validation';
 import * as yup from 'yup';
 
 export const makeUpdateCustomerValidation = (
