@@ -8,6 +8,6 @@ describe('Authentication Middleware', () => {
 
     const result = middleware.use(req, null, null);
 
-    expect(result).rejects.toThrow();
+    expect(result).rejects.toThrow('não autorizado');
   });
 });
